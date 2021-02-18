@@ -1,0 +1,12 @@
+spring:
+  datasource:
+    url: jdbc:mysql://192.168.23.130:3306/test?useSSL=false&useUnicode=true&characterEncoding=UTF-8
+    driver-class-name: com.mysql.jdbc.Driver
+    username: root
+    password: mypassword
+
+mybatis:
+  config-location: classpath:mybatis-config.xml # 配置 MyBatis 配置文件路径
+  mapper-locations: classpath:mapper/*.xml # 配置 Mapper XML 地址
+  type-aliases-package: com.timberliu.springboot.dataobject # 配置数据库实体包路径
+

@@ -1,0 +1,24 @@
+POST http://localhost:8080/users/update_gender
+Content-Type: application/json
+
+{
+  "id": 1,
+  "gender": 3
+}
+
+###
+POST http://localhost:8080/users/add
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+
+--WebAppBoundary
+Content-Disposition: form-data; name="field-name"
+
+username-1
+password-hi
+--WebAppBoundary--
+
+###
+GET http://localhost:8080/users/get?id=0
+Accept: application/json
+
+###

@@ -1,0 +1,15 @@
+dubbo:
+  application:
+    name: user-service-provider
+  registry:
+    address: zookeeper://192.168.23.130:2181
+  # 服务提供者协议配置
+  protocol:
+    port: -1 # 协议端口，-1 表示随机端口
+    name: dubbo
+  provider:
+    timeout: 1000 # 远程服务调用超时时间，单位：毫秒
+    UserRpcService:
+      version: 1.0.0
+  scan:
+    base-packages: com.timberliu.dubbo.service

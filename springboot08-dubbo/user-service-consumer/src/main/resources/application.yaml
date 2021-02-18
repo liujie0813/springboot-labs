@@ -1,0 +1,9 @@
+dubbo:
+  application:
+    name: user-service-consumer
+  registry:
+    address: zookeeper://192.168.23.130:2181
+  consumer:
+    timeout: 1000
+    UserRpcService:
+      version: 1.0.0

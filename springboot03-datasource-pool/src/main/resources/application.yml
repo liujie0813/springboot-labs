@@ -1,0 +1,94 @@
+spring:
+  profiles:
+    active: druid-multi
+
+---
+
+spring:
+  profiles: hikari-single
+  datasource:
+    url: jdbc:mysql://192.168.23.130:3306/test?useSSL=false&useUnicode=true&characterEncoding=UTF-8
+    driver-class-name: com.mysql.jdbc.Driver
+    username: root
+    password: mypassword
+    hikari:
+      minimum-idle: 10 # 连接池的最小空闲连接数，默认为 10
+      maximum-pool-size: 10 # 连接池的最大连接数，包括闲置和使用中的，默认为 10
+      auto-commit: true # 是否自动提交从池中返回的连接，默认为 true
+      connection-timeout: 30000 # 连接超时时间，默认为 30000
+      idle-timeout: 600000 # 连接允许在池中闲置的最长时间，默认为 600000（10分钟）
+      max-lifetime: 1800000 # 池中连接的最长生命周期，默认为 1800000（30分钟），0表示无限
+      connection-test-query: SELECT 1
+
+---
+
+spring:
+  profiles: druid-single
+  datasource:
+    url: jdbc:mysql://192.168.23.130:3306/test?useSSL=false&useUnicode=true&characterEncoding=UTF-8
+    driver-class-name: com.mysql.jdbc.Driver
+    username: root
+    password: mypassword
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      initial-size: 0 # 初始化时建立连接的个数
+      min-idle: 0 # 池中最小空闲连接数，默认为 0
+      max-active: 20 # 池中最大连接数，默认为 8
+      max-wait: 5000 # 获取连接时最大等待时间，单位毫秒
+      validation-query: SELECT 1 # 检测连接是否有效的 SQL，要求是一个查询语句
+      validation-query-timeout: 5000 # 检测连接是否有效的超时时间
+      test-on-borrow: true # 申请连接时执行 validationQuery 检测连接是否有效，默认为 true
+      test-on-return: false # 归还连接时执行 validationQuery 检测连接是否有效 ，默认为 false
+      test-while-idle: false # 申请连接时检测，如果空闲时间大于 timeBetweenEvictionRunsMillis，执行 validationQuery 检测连接是否有效
+      time-between-eviction-runs-millis: 1000
+      filters: stat,wall # 通过别名启用相应的内置扩展插件，常用插件有：监控统计用 stat，日志用 log4j，防御sql注入用 wall
+      filter:
+        stat: # 配置 StatFilter
+          enabled: true # 使自定义 Filter 配置生效需要将对应 Filter 的 enabled 置为 true
+          db-type: mysql
+          log-slow-sql: true # 开启慢查询记录
+          slow-sql-millis: 5000 # 慢 SQL 标准（单位：毫秒）
+        wall: # 配置 WallFilter
+          enabled: true
+          db-type: mysql
+          config:
+            delete-allow: false
+            drop-table-allow: false
+      stat-view-servlet: # 配置 StatViewServlet
+        enabled: true # 是否开启
+        login-username: druid
+        login-password: druid
+
+---
+
+spring:
+  profiles: druid-multi
+  datasource:
+    orders:
+      url: jdbc:mysql://192.168.23.130:3306/test?useSSL=false&useUnicode=true&characterEncoding=UTF-8
+      driver-class-name: com.mysql.jdbc.Driver
+      username: root
+      password: mypassword
+      type: com.alibaba.druid.pool.DruidDataSource
+      min-idle: 0 # 池中最小空闲连接数，默认为 0
+      max-active: 20 # 池中最大连接数，默认为 8
+    users:
+      url: jdbc:mysql://192.168.23.130:3306/test1?useSSL=false&useUnicode=true&characterEncoding=UTF-8
+      driver-class-name: com.mysql.jdbc.Driver
+      username: root
+      password: mypassword
+      type: com.alibaba.druid.pool.DruidDataSource
+      min-idle: 0 # 池中最小空闲连接数，默认为 0
+      max-active: 10 # 池中最大连接数，默认为 8
+    druid:
+      filters: stat
+      filter:
+        stat: # 配置 StatFilter
+          enabled: true
+          log-slow-sql: true # 开启慢查询记录
+          slow-sql-millis: 5000 # 慢 SQL 标准（单位：毫秒）
+          db-type: mysql
+      stat-view-servlet: # 配置 StatViewServlet
+        enabled: true # 是否开启
+        login-username: druid
+        login-password: druid
