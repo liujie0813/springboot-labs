@@ -1,0 +1,13 @@
+server:
+  port: 18080
+
+spring:
+  application:
+    name: client02-provider
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://eureka-node1:18761/eureka/,http://eureka-node2:28761/eureka/
